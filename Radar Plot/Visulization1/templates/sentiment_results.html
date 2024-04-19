@@ -1,0 +1,26 @@
+<!-- templates/sentiment_results.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sentiment Analysis Results</title>
+  </head>
+  <body>
+    <h1>Sentiment Analysis Results for {{ movie }}</h1>
+    <ul>
+      {% for result in results %}
+      <li>
+        {{ result['Character Name'] }} - Average Sentiment Score: {{
+        result['Final Scores']['Average Sentiment Score'] }}
+      </li>
+      {% endfor %}
+    </ul>
+
+    <!-- Add a button to trigger visualization -->
+    <form action="/make_visualization" method="POST">
+      <input type="submit" value="Make Visualization" />
+    </form>
+  </body>
+</html>

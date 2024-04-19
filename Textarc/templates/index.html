@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sentences Around Circle</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+<style>
+    body {
+        background-color: lightblue; /* Set background color for the entire page */
+    }
+
+    svg {
+        display: block;
+        margin: auto;
+    }
+</style>
+</head>
+<body>
+    <h1>Sentences Around Circle</h1>
+    
+    <form action="/" method="post">
+        <label for="search_word">Enter a word:</label>
+        <input type="text" id="search_word" name="search_word">
+        <input type="submit" value="Search">
+    </form>
+
+    <div id="circle-container"></div>
+
+    <script>
+        d3.json("{{ url_for('static', filename='circle_plot.json') }}").then(data => {
+            const svg = d3.select("#circle-container")
+                .append("svg")
+                .attr("width", 600)
+                .attr("height", 600);
+
+            const circle = svg.append("circle")
+                .attr("cx", 300)
+                .attr("cy", 300)
+                .attr("r", 250)
+                .attr("fill", "none")
+                .attr("stroke", "black");
+
+            const lines = svg.selectAll("line")
+                .data(data)
+                .enter()
+                .append("line")
+                .attr("x1", 300)
+                .attr("y1", 300)
+                .attr("x2", d => d.x)
+                .attr("y2", d => d.y)
+                .attr("stroke", d => d.highlight ? "red" : "black");
+
+            const text = svg.selectAll("text")
+                .data(data)
+                .enter()
+                .append("text")
+                .attr("x", d => d.x)
+                .attr("y", d => d.y)
+                .text(d => d.text)
+                .attr("text-anchor", "middle")
+                .attr("alignment-baseline", "middle")
+                .attr("transform", d => `rotate(${d.angle * 180 / Math.PI} ${d.x} ${d.y})`)
+                .attr("fill", d => d.highlight ? "red" : "black");
+        });
+    </script>
+</body>
+</html>

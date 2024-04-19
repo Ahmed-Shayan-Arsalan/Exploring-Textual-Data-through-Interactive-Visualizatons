@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Top Characters</title>
+  </head>
+  <body>
+    <h1>Top Characters for {{ movie }}</h1>
+    <form action="/analyze_sentiment" method="post">
+      <input type="hidden" name="selected_movie" value="{{ movie }}" />
+      {% for character in characters %}
+      <label for="selected_characters_{{ loop.index0 }}">
+        <input
+          type="checkbox"
+          id="selected_characters_{{ loop.index0 }}"
+          name="selected_characters[]"
+          value="{{ character.meta.character_name }}"
+        />
+        {{ character.meta.character_name }} - {{ character.meta.credit_pos }} </label
+      ><br />
+      {% endfor %}
+      <button type="submit">Analyze Sentiment</button>
+    </form>
+  </body>
+</html>
